@@ -5,24 +5,29 @@ import HomeScreen from './src/screens/home';
 import FormScreen from './src/screens/form';
 import StackParamList from './src/types/navigationTypes';
 import {Button} from 'react-native';
+import {ThemeProvider} from '@shopify/restyle';
+import theme from './src/themes/default';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
 function App(): React.JSX.Element {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={() => ({
-            headerTitle: 'Home',
-            headerRight: () => <Button title="+" />,
-          })}
-        />
-        <Stack.Screen name="Form" component={FormScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider theme={theme}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={() => ({
+              headerTransparent: true,
+              title: '',
+              headerRight: () => <Button title="+" />,
+            })}
+          />
+          <Stack.Screen name="Form" component={FormScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
 
