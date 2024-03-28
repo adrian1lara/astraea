@@ -1,11 +1,15 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {TextInput} from 'react-native';
+import Box from '../components/box';
+import Text from '../components/text';
 
 function FormScreen(): React.JSX.Element {
+  const [name, setName] = useState('');
   return (
-    <View>
-      <Text>Form Screen</Text>
-    </View>
+    <Box>
+      <Text variant={'header'}>Home</Text>
+      <TextInput value={name} onChangeText={setName} placeholder="name" />
+    </Box>
   );
 }
 
