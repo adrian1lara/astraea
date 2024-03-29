@@ -1,14 +1,15 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import StackParamList from '../types/navigationTypes';
+import { RootStackParamList } from '../navigation/types';
 
-type Props = NativeStackScreenProps<StackParamList>;
+
+type Props = NativeStackScreenProps<RootStackParamList>;
 function HomeScreen({navigation}: Props): React.JSX.Element {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button title="+" onPress={() => navigation.navigate('Form')} />
+        <Button title="+" onPress={() => navigation.navigate('CreateExpenseScreen')} />
       ),
     });
   }, [navigation]);
