@@ -2,13 +2,34 @@ import React, {useState} from 'react';
 import {Button, StyleSheet, TextInput} from 'react-native';
 import Box from '../components/box';
 import Text from '../components/text';
+import {addItem} from '../db/items';
+import connectToDatabase from '../db/db';
+import DatePicker from 'react-native-date-picker';
 
 function FormScreen(): React.JSX.Element {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
 
-  const handleAdd = () => {
-    console.log(name, cost);
+  const handleAdd = async () => {
+    const db = await connectToDatabase();
+
+    try {
+      const newItem = {
+        name: name,
+        date_added: new Date(),
+        category: 'all',
+        cost: parseFloat(cost),
+      };
+
+      await addItem(db, newItem);
+      setName('');
+      setCost('');
+      setDate(new Date());
+    } catch (error) {
+      console.error('Failed to add Item: ', error);
+    }
   };
 
   return (
@@ -26,7 +47,24 @@ function FormScreen(): React.JSX.Element {
         onChangeText={setCost}
         placeholder="cost"
       />
-
+      <TextInput
+        style={styles.input}
+        value={date.toLocaleDateString()}
+        onPressIn={() => setOpen(true)}
+      />
+      <DatePicker
+        modal
+        date={date}
+        open={open}
+        mode="date"
+        onConfirm={selected => {
+          setOpen(false);
+          setDate(selected);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
       <Button title="add" onPress={handleAdd} />
     </Box>
   );
