@@ -1,54 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import Box from './box';
 import Text from './text';
+import {getItems} from '../db/items';
+import connectToDatabase from '../db/db';
 
-const items = [
-  {
-    name: 'item1',
-    price: '$10',
-  },
-  {
-    name: 'item2',
-    price: '$15',
-  },
-  {
-    name: 'item3',
-    price: '$20',
-  },
-  {
-    name: 'item4',
-    price: '$25',
-  },
-  {
-    name: 'item5',
-    price: '$30',
-  },
-  {
-    name: 'item6',
-    price: '$35',
-  },
-  {
-    name: 'item7',
-    price: '$40',
-  },
-  {
-    name: 'item8',
-    price: '$45',
-  },
-  {
-    name: 'item9',
-    price: '$50',
-  },
-  {
-    name: 'item10',
-    price: '$55',
-  },
-];
+type ItemProps = {name: String; cost: number};
 
-type ItemProps = {name: String; price: String};
-
-const Item = ({name, price}: ItemProps) => (
+const Item = ({name, cost}: ItemProps) => (
   <Box
     paddingHorizontal={'m'}
     borderRadius={5}
@@ -62,13 +21,27 @@ const Item = ({name, price}: ItemProps) => (
     </Box>
     <Box width={'20%'} borderLeftWidth={1}>
       <Text variant={'paragraph'} textAlign={'center'}>
-        {price}
+        {cost}
       </Text>
     </Box>
   </Box>
 );
 
 function ListView(): React.JSX.Element {
+  const [data, setData] = useState<ItemProps[]>([]);
+
+  const fecthItems = async () => {
+    try {
+      const db = await connectToDatabase();
+      const fetchedItems = await getItems(db);
+      setData(fetchedItems);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fecthItems();
+  });
+
   return (
     <Box width={'90%'}>
       <Box
@@ -88,8 +61,8 @@ function ListView(): React.JSX.Element {
         </Box>
       </Box>
       <FlatList
-        data={items}
-        renderItem={({item}) => <Item name={item.name} price={item.price} />}
+        data={data}
+        renderItem={({item}) => <Item name={item.name} cost={item.cost} />}
       />
     </Box>
   );
