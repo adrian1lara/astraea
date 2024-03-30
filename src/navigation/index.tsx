@@ -10,7 +10,14 @@ function Navigation(): React.JSX.Element {
   return (
     <Stack.Navigator>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="CreateExpenseScreen" component={FormScreen} />
+      <Stack.Screen
+        name="CreateExpenseScreen"
+        component={FormScreen}
+        options={{
+          headerBackTitle: 'back',
+          headerTitle: '',
+        }}
+      />
     </Stack.Navigator>
   );
 }
