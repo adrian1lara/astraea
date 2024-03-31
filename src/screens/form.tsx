@@ -11,16 +11,16 @@ function FormScreen(): React.JSX.Element {
   const [cost, setCost] = useState('');
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-
   const handleAdd = async () => {
     const db = await connectToDatabase();
+    const floatCost = parseFloat(cost);
 
     try {
       const newItem = {
         name: name,
         date_added: new Date(),
         category: 'all',
-        cost: parseFloat(cost),
+        cost: floatCost,
       };
 
       await addItem(db, newItem);
