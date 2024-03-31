@@ -1,12 +1,27 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
-import {Button, StyleSheet, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Button} from 'react-native';
 import {RootStackParamList} from '../navigation/types';
 import ListView from '../components/listView';
 import Box from '../components/box';
+import DonutChart from '../components/donutChart';
+import TopExpenses from '../components/topExpenses';
+import connectToDatabase from '../db/db';
+import {SQLiteDatabase} from 'react-native-sqlite-storage';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 function HomeScreen({navigation}: Props): React.JSX.Element {
+  const [database, setDatabase] = useState<SQLiteDatabase>();
+
+  const loadData = async () => {
+    try {
+      const db = await connectToDatabase();
+      setDatabase(db);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -16,28 +31,23 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
         />
       ),
     });
+    loadData();
   }, [navigation]);
 
   return (
-    <Box
-      flex={1}
-      backgroundColor={'mainBackground'}
-      alignItems={'center'}
-      borderColor={'cardPrimaryBackground'}
-      borderWidth={1}>
-      <Text style={styles.text}>Home</Text>
-      <ListView />
+    <Box flex={1} alignItems={'center'} borderColor={'cardPrimaryBackground'}>
+      <Box
+        flexDirection={'row'}
+        width={'100%'}
+        paddingHorizontal={'m'}
+        paddingVertical={'m'}
+        justifyContent={'space-between'}>
+        {database && <TopExpenses db={database} />}
+        <DonutChart />
+      </Box>
+      {database && <ListView db={database} />}
     </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    color: 'black',
-    fontSize: 42,
-    fontWeight: '100',
-    textAlign: 'center',
-  },
-});
 
 export default HomeScreen;
