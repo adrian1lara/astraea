@@ -28,6 +28,15 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
     }
   }, []);
 
+  const loadItems = async (db: SQLiteDatabase) => {
+    try {
+      const fetchedItems = await getItems(db);
+      setItems(fetchedItems);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -37,17 +46,9 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
         />
       ),
     });
+
     loadData();
   }, [navigation, loadData]);
-
-  const loadItems = async (db: SQLiteDatabase) => {
-    try {
-      const fetchedItems = await getItems(db);
-      setItems(fetchedItems);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <Box
@@ -62,7 +63,7 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
         {database && <TopExpenses db={database} />}
         {items && <DonutChart items={items} />}
       </Box>
-      <Box marginTop={'s'}>{database && <ListView db={database} />}</Box>
+      <Box marginTop={'s'}>{items && <ListView items={items} />}</Box>
     </Box>
   );
 }
