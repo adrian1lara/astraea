@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FlatList} from 'react-native';
 import Box from './box';
 import Text from './text';
-import {getItems} from '../db/items';
-
-import {SQLiteDatabase} from 'react-native-sqlite-storage';
 
 type ItemProps = {name: String; cost: number};
+
+type Items = {
+  items: ItemProps[];
+};
 
 const Item = ({name, cost}: ItemProps) => (
   <Box
@@ -28,26 +29,11 @@ const Item = ({name, cost}: ItemProps) => (
   </Box>
 );
 
-function ListView({db}: {db: SQLiteDatabase}): React.JSX.Element {
-  const [data, setData] = useState<ItemProps[]>([]);
+function ListView({items}: Items): React.JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
-
-  const loadData = async () => {
-    try {
-      const fetchedItems = await getItems(db);
-      setData(fetchedItems);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-  });
 
   const onRefresh = () => {
     setRefreshing(true);
-    loadData();
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
@@ -71,9 +57,9 @@ function ListView({db}: {db: SQLiteDatabase}): React.JSX.Element {
           </Text>
         </Box>
       </Box>
-      {data ? (
+      {items ? (
         <FlatList
-          data={data}
+          data={items}
           renderItem={({item}) => <Item name={item.name} cost={item.cost} />}
           refreshing={refreshing}
           onRefresh={onRefresh}
