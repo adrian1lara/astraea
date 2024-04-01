@@ -1,9 +1,22 @@
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
 
-type Item = {name: string; date_added: Date; category: string; cost: number};
+type Item = {
+  id: number;
+  name: string;
+  date_added: Date;
+  category: string;
+  cost: number;
+};
+
+type ItemAdd = {
+  name: string;
+  date_added: Date;
+  category: string;
+  cost: number;
+};
 type TopItemProps = {name: string};
 // function to add new Item
-export const addItem = async (db: SQLiteDatabase, item: Item) => {
+export const addItem = async (db: SQLiteDatabase, item: ItemAdd) => {
   const insertQuery = `
     INSERT INTO ITEMS (name, date_added, category, cost)
     VALUES (?, ?, ?, ?)`;
