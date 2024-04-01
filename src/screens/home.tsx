@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {RootStackParamList} from '../navigation/types';
 import ListView from '../components/listView';
 import Box from '../components/box';
@@ -10,23 +10,18 @@ import {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {getItems} from '../db/items';
 import {Button} from 'react-native';
 
-type Props = NativeStackScreenProps<RootStackParamList>;
-type Item = {name: string; date_added: Date; category: string; cost: number};
+type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
+type ItemProp = {
+  id: number;
+  name: string;
+  date_added: Date;
+  category: string;
+  cost: number;
+};
 
-function HomeScreen({navigation}: Props): React.JSX.Element {
+function HomeScreen({navigation, route}: Props): React.JSX.Element {
   const [database, setDatabase] = useState<SQLiteDatabase>();
-  const [items, setItems] = useState<Item[]>([]);
-
-  const loadData = useCallback(async () => {
-    try {
-      const db = await connectToDatabase();
-      setDatabase(db);
-
-      loadItems(db);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  const [items, setItems] = useState<ItemProp[]>([]);
 
   const loadItems = async (db: SQLiteDatabase) => {
     try {
@@ -47,8 +42,23 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
       ),
     });
 
-    loadData();
-  }, [navigation, loadData]);
+    const loadData = async () => {
+      try {
+        const db = await connectToDatabase();
+        setDatabase(db);
+
+        loadItems(db);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadData();
+    });
+
+    return unsubscribe;
+  }, [navigation, route.params?.itemAdded]);
 
   return (
     <Box
