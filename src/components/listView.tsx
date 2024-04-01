@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import Box from './box';
 import Text from './text';
@@ -32,18 +32,18 @@ function ListView({db}: {db: SQLiteDatabase}): React.JSX.Element {
   const [data, setData] = useState<ItemProps[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const loadData = useCallback(async () => {
+  const loadData = async () => {
     try {
       const fetchedItems = await getItems(db);
       setData(fetchedItems);
     } catch (error) {
       console.error(error);
     }
-  }, [db]);
+  };
 
   useEffect(() => {
     loadData();
-  }, [loadData]);
+  });
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -54,7 +54,7 @@ function ListView({db}: {db: SQLiteDatabase}): React.JSX.Element {
   };
 
   return (
-    <Box width={'90%'}>
+    <Box width={'100%'}>
       <Box
         flexDirection={'row'}
         borderWidth={1}
