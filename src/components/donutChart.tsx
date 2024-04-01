@@ -19,13 +19,15 @@ function DonutChart({items}: Items): React.JSX.Element {
   const widthAndHeight = 150;
 
   const validItems = items.filter(item => item.cost !== 0); // Filter out items with zero cost
-  const costData = validItems.map(item => item.cost);
-  const sliceColor = generateSliceColors(costData.length);
+  const costData = validItems.map(item => item.cost); // mapping all valid items
+  const sliceColor = generateSliceColors(costData.length); // generate colors by the lengh of de data
   //const colorMapping = costData.map((_, index) => sliceColor[index]); // Map cost to color
+  const totalCost = costData.reduce((a, b) => a + b, 0); // sum all cost form the data
+
   return (
     <Box p={'s'}>
       <Text variant={'subheader'} textAlign={'center'}>
-        Basic Chart
+        total : {`${totalCost ? totalCost : 0}$`}
       </Text>
       {validItems.length > 0 ? ( // Check for valid items before rendering
         <>
