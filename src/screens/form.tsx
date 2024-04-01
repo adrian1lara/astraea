@@ -8,7 +8,7 @@ import DatePicker from 'react-native-date-picker';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/types';
 
-type Props = NativeStackScreenProps<RootStackParamList>;
+type Props = NativeStackScreenProps<RootStackParamList, 'CreateExpenseScreen'>;
 
 function FormScreen({navigation}: Props): React.JSX.Element {
   const [name, setName] = useState('');
@@ -35,8 +35,7 @@ function FormScreen({navigation}: Props): React.JSX.Element {
       setName('');
       setCost('');
       setDate(new Date());
-
-      navigation.navigate('HomeScreen');
+      navigation.navigate('HomeScreen', {itemAdded: true});
     } catch (error) {
       console.error('Failed to add Item: ', error);
     }
