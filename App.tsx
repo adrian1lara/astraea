@@ -4,6 +4,7 @@ import {ThemeProvider} from '@shopify/restyle';
 import theme from './src/themes/default';
 import Navigation from './src/navigation';
 import connectToDatabase, {createTables, getTablesNames} from './src/db/db';
+import {StatusBar} from 'react-native';
 
 function App(): React.JSX.Element {
   const loadData = useCallback(async () => {
@@ -23,6 +24,7 @@ function App(): React.JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
+      <StatusBar barStyle={'dark-content'} />
       <NavigationContainer>
         <Navigation />
       </NavigationContainer>
