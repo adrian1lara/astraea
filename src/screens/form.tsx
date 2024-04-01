@@ -40,11 +40,13 @@ function FormScreen(): React.JSX.Element {
         value={name}
         onChangeText={setName}
         placeholder="name"
+        maxLength={20}
       />
       <TextInput
         style={styles.input}
         value={cost}
         onChangeText={setCost}
+        keyboardType="numeric"
         placeholder="cost"
       />
       <TextInput
