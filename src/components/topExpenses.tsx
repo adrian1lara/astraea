@@ -16,18 +16,18 @@ const TopItems = ({name}: TopItemProps) => (
 function TopExpenses({db}: {db: SQLiteDatabase}): React.JSX.Element {
   const [data, setData] = useState<TopItemProps[]>([]);
 
-  const displayTopCostItems = async () => {
-    try {
-      const topItems = await getTopCostItems(db);
-      setData(topItems);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const displayTopCostItems = async () => {
+      try {
+        const topItems = await getTopCostItems(db);
+        setData(topItems);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     displayTopCostItems();
-  });
+  }, [db]);
 
   return (
     <Box borderWidth={1} borderRadius={10} padding={'s'}>
