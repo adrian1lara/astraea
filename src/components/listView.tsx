@@ -3,7 +3,11 @@ import {FlatList} from 'react-native';
 import Box from './box';
 import Text from './text';
 
-type ItemProps = {name: String; cost: number};
+type ItemProps = {
+  id: number;
+  name: String;
+  cost: number;
+};
 
 type Items = {
   items: ItemProps[];
@@ -60,9 +64,12 @@ function ListView({items}: Items): React.JSX.Element {
       {items ? (
         <FlatList
           data={items}
-          renderItem={({item}) => <Item name={item.name} cost={item.cost} />}
+          renderItem={({item}) => (
+            <Item id={item.id} name={item.name} cost={item.cost} />
+          )}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          keyExtractor={item => item.id.toString()}
         />
       ) : (
         <Text variant={'paragraph'}>Your Recent Expenses Here!</Text>
