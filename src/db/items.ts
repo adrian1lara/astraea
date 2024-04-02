@@ -72,3 +72,16 @@ export const getItems = async (db: SQLiteDatabase): Promise<Item[]> => {
     throw new Error('Failed to get Items from database');
   }
 };
+
+//function to delete an item
+export const deleteItem = async (db: SQLiteDatabase, id: number) => {
+  const deleteQuery = `DELETE FROM Items where id = ${id}`;
+
+  try {
+    await db.executeSql(deleteQuery);
+    console.log(`successfully deleted ${id}`);
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to delete Items');
+  }
+};
