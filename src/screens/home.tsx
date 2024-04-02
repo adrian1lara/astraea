@@ -7,7 +7,7 @@ import DonutChart from '../components/donutChart';
 import TopExpenses from '../components/topExpenses';
 import connectToDatabase from '../db/db';
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {getItems} from '../db/items';
+import {deleteItem, getItems} from '../db/items';
 import {Button} from 'react-native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
@@ -60,6 +60,15 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
     return unsubscribe;
   }, [navigation, route.params?.itemAdded]);
 
+  const handleDeleteItem = async (id: number) => {
+    try {
+      const db = await connectToDatabase();
+      await deleteItem(db, id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Box
       flex={1}
@@ -73,7 +82,9 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
         {database && <TopExpenses db={database} />}
         {items && <DonutChart items={items} />}
       </Box>
-      <Box marginTop={'s'}>{items && <ListView items={items} />}</Box>
+      <Box marginTop={'s'}>
+        {items && <ListView items={items} onDeleteItem={handleDeleteItem} />}
+      </Box>
     </Box>
   );
 }
