@@ -64,6 +64,8 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
     try {
       const db = await connectToDatabase();
       await deleteItem(db, id);
+
+      await loadItems(db);
     } catch (error) {
       console.error(error);
     }
