@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import Box from './box';
 import Text from './text';
+import {SwipeListView} from 'react-native-swipe-list-view';
 
 type ItemProps = {
   id: number;
   name: String;
   cost: number;
-  onDeleteItem: (id: number) => void;
 };
 
 type Item = {
@@ -18,31 +18,51 @@ type Item = {
   cost: number;
 };
 
+type HiddenItemProps = {
+  id: number;
+  onDeleteItem: (id: number) => void;
+  onCloseItem: () => void;
+};
+
 type ListViewProps = {
   items: Item[];
   onDeleteItem: (id: number) => Promise<void>;
 };
 
-const Item: React.FC<ItemProps> = ({id, name, cost, onDeleteItem}) => (
-  <TouchableOpacity onPress={() => onDeleteItem(id)}>
-    <Box
-      paddingHorizontal={'m'}
-      borderRadius={5}
-      paddingVertical={'m'}
-      borderWidth={1}
-      flexDirection={'row'}
-      width={'100%'}
-      marginBottom={'s'}>
-      <Box width={'80%'}>
-        <Text variant={'paragraph'}>{name}</Text>
-      </Box>
-      <Box width={'20%'} borderLeftWidth={1}>
-        <Text variant={'paragraph'} textAlign={'center'}>
-          {cost}
-        </Text>
-      </Box>
+const RenderHiddenItem: React.FC<HiddenItemProps> = ({
+  id,
+  onCloseItem,
+  onDeleteItem,
+}) => (
+  <Box style={styles.hiddenItemContainer}>
+    <TouchableOpacity
+      style={styles.hiddenItemButton}
+      onPress={() => onCloseItem()}>
+      <Text style={styles.hiddenItemText} variant={'paragraph'}>
+        Close
+      </Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={[styles.hiddenItemButton]}
+      onPress={() => onDeleteItem(id)}>
+      <Text style={styles.hiddenItemText} variant={'paragraph'}>
+        Delete
+      </Text>
+    </TouchableOpacity>
+  </Box>
+);
+
+const Item: React.FC<ItemProps> = ({id, name, cost}) => (
+  <Box key={id} style={styles.renderItemContainer}>
+    <Box width={'80%'} style={styles.listCard}>
+      <Text variant={'paragraph'} style={styles.listCardTextOne}>
+        {name}
+      </Text>
+      <Text variant={'paragraph'} textAlign={'center'}>
+        {cost}
+      </Text>
     </Box>
-  </TouchableOpacity>
+  </Box>
 );
 
 function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
@@ -74,19 +94,22 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
         </Box>
       </Box>
       {items ? (
-        <FlatList
+        <SwipeListView
           data={items}
           renderItem={({item}) => (
-            <Item
+            <Item id={item.id} name={item.name} cost={item.cost} />
+          )}
+          renderHiddenItem={({item}) => (
+            <RenderHiddenItem
               id={item.id}
-              name={item.name}
-              cost={item.cost}
               onDeleteItem={onDeleteItem}
+              onCloseItem={onRefresh}
             />
           )}
           refreshing={refreshing}
           onRefresh={onRefresh}
           keyExtractor={item => item.id.toString()}
+          rightOpenValue={-230}
         />
       ) : (
         <Text variant={'paragraph'}>Your Recent Expenses Here!</Text>
@@ -94,5 +117,41 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
     </Box>
   );
 }
+
+const styles = StyleSheet.create({
+  renderItemContainer: {
+    marginVertical: 10,
+  },
+  listCard: {
+    backgroundColor: '#F8F7F1',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 15,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  listCardTextOne: {
+    color: '#000000',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+  },
+  hiddenItemContainer: {
+    marginVertical: 16,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  hiddenItemButton: {
+    marginRight: 10,
+    backgroundColor: '#191919',
+    borderRadius: 4,
+    padding: 10,
+  },
+  hiddenItemText: {
+    color: '#FFFFFF',
+    height: 20,
+  },
+});
 
 export default ListView;
