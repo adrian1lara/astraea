@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import Box from './box';
 import Text from './text';
 
@@ -7,33 +7,45 @@ type ItemProps = {
   id: number;
   name: String;
   cost: number;
+  onDeleteItem: (id: number) => void;
 };
 
-type Items = {
-  items: ItemProps[];
+type Item = {
+  id: number;
+  name: string;
+  date_added: Date;
+  category: string;
+  cost: number;
 };
 
-const Item = ({name, cost}: ItemProps) => (
-  <Box
-    paddingHorizontal={'m'}
-    borderRadius={5}
-    paddingVertical={'m'}
-    borderWidth={1}
-    flexDirection={'row'}
-    width={'100%'}
-    marginBottom={'s'}>
-    <Box width={'80%'}>
-      <Text variant={'paragraph'}>{name}</Text>
+type ListViewProps = {
+  items: Item[];
+  onDeleteItem: (id: number) => Promise<void>;
+};
+
+const Item: React.FC<ItemProps> = ({id, name, cost, onDeleteItem}) => (
+  <TouchableOpacity onPress={() => onDeleteItem(id)}>
+    <Box
+      paddingHorizontal={'m'}
+      borderRadius={5}
+      paddingVertical={'m'}
+      borderWidth={1}
+      flexDirection={'row'}
+      width={'100%'}
+      marginBottom={'s'}>
+      <Box width={'80%'}>
+        <Text variant={'paragraph'}>{name}</Text>
+      </Box>
+      <Box width={'20%'} borderLeftWidth={1}>
+        <Text variant={'paragraph'} textAlign={'center'}>
+          {cost}
+        </Text>
+      </Box>
     </Box>
-    <Box width={'20%'} borderLeftWidth={1}>
-      <Text variant={'paragraph'} textAlign={'center'}>
-        {cost}
-      </Text>
-    </Box>
-  </Box>
+  </TouchableOpacity>
 );
 
-function ListView({items}: Items): React.JSX.Element {
+function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
@@ -65,7 +77,12 @@ function ListView({items}: Items): React.JSX.Element {
         <FlatList
           data={items}
           renderItem={({item}) => (
-            <Item id={item.id} name={item.name} cost={item.cost} />
+            <Item
+              id={item.id}
+              name={item.name}
+              cost={item.cost}
+              onDeleteItem={onDeleteItem}
+            />
           )}
           refreshing={refreshing}
           onRefresh={onRefresh}
