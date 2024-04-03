@@ -26,9 +26,6 @@ function DonutChart({items}: Items): React.JSX.Element {
 
   return (
     <Box p={'s'}>
-      <Text variant={'subheader'} textAlign={'center'}>
-        total : {`${totalCost ? totalCost : 0}$`}
-      </Text>
       {validItems.length > 0 ? ( // Check for valid items before rendering
         <>
           <PieChart
@@ -37,6 +34,13 @@ function DonutChart({items}: Items): React.JSX.Element {
             sliceColor={sliceColor}
             coverRadius={0.45}
           />
+          <Text
+            variant={'paragraph'}
+            textAlign={'center'}
+            fontSize={20}
+            fontWeight={'700'}>
+            {`${totalCost ? totalCost : 0} $`}
+          </Text>
         </>
       ) : (
         <Text variant={'paragraph'} textAlign={'center'}>
