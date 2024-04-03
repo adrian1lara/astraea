@@ -9,7 +9,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function Navigation(): React.JSX.Element {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          title: 'Astraea',
+        }}
+      />
       <Stack.Screen
         name="CreateExpenseScreen"
         component={FormScreen}
