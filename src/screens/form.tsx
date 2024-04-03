@@ -26,7 +26,7 @@ function FormScreen({navigation}: Props): React.JSX.Element {
     try {
       const newItem = {
         name: name,
-        date_added: new Date(),
+        date_added: date,
         category: 'all',
         cost: floatCost,
       };
