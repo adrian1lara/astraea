@@ -61,11 +61,15 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
   }, [navigation, route.params?.itemAdded]);
 
   const handleDeleteItem = async (id: number) => {
+    const newItems = [...items];
+
     try {
       const db = await connectToDatabase();
       await deleteItem(db, id);
-
-      await loadItems(db);
+      const index = items.findIndex(v => v.id === id);
+      newItems.splice(index, 1);
+      setItems(newItems);
+      //await loadItems(db);
     } catch (error) {
       console.error(error);
     }
