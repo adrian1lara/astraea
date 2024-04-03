@@ -27,15 +27,19 @@ function TopExpenses({db}: {db: SQLiteDatabase}): React.JSX.Element {
     };
 
     displayTopCostItems();
-  }, [db]);
+  }, [db, data]);
 
   return (
     <Box borderWidth={1} borderRadius={10} padding={'s'}>
       <Text variant={'subheader'}>Top Expenses</Text>
-      <FlatList
-        data={data}
-        renderItem={({item}) => <TopItems name={item.name} />}
-      />
+      {data.length > 0 ? (
+        <FlatList
+          data={data}
+          renderItem={({item}) => <TopItems name={item.name} />}
+        />
+      ) : (
+        <Text variant={'paragraph'}>Add some expenses</Text>
+      )}
     </Box>
   );
 }
