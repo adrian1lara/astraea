@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Animated, StyleSheet, TouchableOpacity} from 'react-native';
 import Box from './box';
 import Text from './text';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -29,6 +29,7 @@ type ListViewProps = {
   onDeleteItem: (id: number) => Promise<void>;
 };
 
+// Render HiddenItem component in swipeList
 const RenderHiddenItem: React.FC<HiddenItemProps> = ({
   id,
   onCloseItem,
@@ -43,7 +44,7 @@ const RenderHiddenItem: React.FC<HiddenItemProps> = ({
       </Text>
     </TouchableOpacity>
     <TouchableOpacity
-      style={[styles.hiddenItemButton]}
+      style={[styles.backRightBtn, styles.dangerBtn]}
       onPress={() => onDeleteItem(id)}>
       <Text style={styles.hiddenItemText} variant={'paragraph'}>
         Delete
@@ -52,21 +53,31 @@ const RenderHiddenItem: React.FC<HiddenItemProps> = ({
   </Box>
 );
 
+//Render component Item In SwipeList
 const Item: React.FC<ItemProps> = ({id, name, cost}) => (
   <Box key={id} style={styles.renderItemContainer}>
-    <Box width={'80%'} style={styles.listCard}>
+    <Box style={styles.listCard}>
       <Text variant={'paragraph'} style={styles.listCardTextOne}>
         {name}
       </Text>
-      <Text variant={'paragraph'} textAlign={'center'}>
-        {cost}
+      <Text variant={'paragraph'} textAlign={'center'} fontWeight={'600'}>
+        $ {cost}
       </Text>
     </Box>
   </Box>
 );
+export const backButtonWidth = 75;
+export const openWidth = backButtonWidth;
 
 function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
+
+  const av = new Animated.Value(0);
+
+  // Fix warn sending onAnimatedValueUpdate
+  av.addListener(() => {
+    return;
+  });
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -93,7 +104,7 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
           </Text>
         </Box>
       </Box>
-      {items ? (
+      {items.length > 0 ? (
         <SwipeListView
           data={items}
           renderItem={({item}) => (
@@ -109,7 +120,7 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
           refreshing={refreshing}
           onRefresh={onRefresh}
           keyExtractor={item => item.id.toString()}
-          rightOpenValue={-230}
+          rightOpenValue={-openWidth}
         />
       ) : (
         <Text variant={'paragraph'}>Your Recent Expenses Here!</Text>
@@ -120,7 +131,7 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
 
 const styles = StyleSheet.create({
   renderItemContainer: {
-    marginVertical: 10,
+    marginVertical: 5,
   },
   listCard: {
     backgroundColor: '#F8F7F1',
@@ -148,6 +159,21 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
   },
+  backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    borderRadius: 4,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: backButtonWidth,
+  },
+
+  dangerBtn: {
+    backgroundColor: '#ff0000',
+    right: 0,
+  },
+
   hiddenItemText: {
     color: '#FFFFFF',
     height: 20,
