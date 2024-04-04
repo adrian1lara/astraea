@@ -9,7 +9,7 @@ type TopItemProps = {name: string};
 
 const TopItems = ({name}: TopItemProps) => (
   <Box borderWidth={1} p={'s'} borderRadius={8} marginBottom={'s'}>
-    <Text variant={'paragraph'}>{name}</Text>
+    <Text variant={'body'}>{name}</Text>
   </Box>
 );
 
@@ -38,7 +38,7 @@ function TopExpenses({db}: {db: SQLiteDatabase}): React.JSX.Element {
           renderItem={({item}) => <TopItems name={item.name} />}
         />
       ) : (
-        <Text variant={'paragraph'}>Add some expenses</Text>
+        <Text variant={'body'}>Add some expenses</Text>
       )}
     </Box>
   );
