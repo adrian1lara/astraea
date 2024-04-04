@@ -35,7 +35,7 @@ function DonutChart({items}: Items): React.JSX.Element {
             coverRadius={0.45}
           />
           <Text
-            variant={'paragraph'}
+            variant={'body'}
             textAlign={'center'}
             fontSize={20}
             fontWeight={'700'}>
@@ -43,7 +43,7 @@ function DonutChart({items}: Items): React.JSX.Element {
           </Text>
         </>
       ) : (
-        <Text variant={'paragraph'} textAlign={'center'}>
+        <Text variant={'body'} textAlign={'center'}>
           No data available
         </Text>
       )}
