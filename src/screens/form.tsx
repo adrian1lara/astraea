@@ -42,7 +42,7 @@ function FormScreen({navigation}: Props): React.JSX.Element {
   };
 
   return (
-    <Box padding={'m'}>
+    <Box padding={'m'} backgroundColor={'mainBackground'}>
       <Text variant={'header'}>Home</Text>
       <TextInput
         style={styles.input}
