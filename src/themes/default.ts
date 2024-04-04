@@ -9,6 +9,8 @@ const palette = {
   greenPrimary: '#0ECD9D',
   greenDark: '#0A906E',
 
+  blueDark: '#101820FF',
+
   black: '#0B0B0B',
   white: '#F0F2F3',
   red: '#FF0000',
@@ -16,9 +18,14 @@ const palette = {
 
 const theme = createTheme({
   colors: {
-    mainBackground: palette.white,
+    mainBackground: palette.purpleLight,
+    mainForeground: palette.black,
+
     cardPrimaryBackground: palette.purplePrimary,
-    text: palette.black,
+    cardSecondaryBackground: palette.greenLight,
+
+    text: palette.white,
+    secondaryText: palette.black,
     delete: palette.red,
   },
   spacing: {
@@ -32,28 +39,44 @@ const theme = createTheme({
     tablet: 768,
   },
   textVariants: {
+    default: {},
     header: {
       fontFamily: 'Roboto-Bold',
       fontWeight: 'bold',
       fontSize: 34,
       lineHeight: 42.5,
-      color: 'text',
+      color: 'mainForeground',
     },
     subheader: {
       fontFamily: 'Roboto-SemiBold',
       fontWeight: '600',
       fontSize: 24,
       lineHeight: 30,
-      color: 'text',
+      color: 'mainForeground',
     },
-    paragraph: {
+    body: {
       fontFamily: 'Roboto',
       fontSize: 16,
       lineHeight: 24,
-      color: 'text',
+      color: 'mainForeground',
     },
   },
 });
 
 export type Theme = typeof theme;
+
+export const darkTheme: Theme = {
+  ...theme,
+  colors: {
+    ...theme.colors,
+    mainBackground: palette.blueDark,
+    mainForeground: palette.white,
+
+    cardSecondaryBackground: palette.greenDark,
+    secondaryText: palette.white,
+    text: palette.black,
+    delete: palette.red,
+  },
+};
+
 export default theme;
