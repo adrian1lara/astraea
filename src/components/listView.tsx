@@ -39,14 +39,14 @@ const RenderHiddenItem: React.FC<HiddenItemProps> = ({
     <TouchableOpacity
       style={styles.hiddenItemButton}
       onPress={() => onCloseItem()}>
-      <Text style={styles.hiddenItemText} variant={'paragraph'}>
+      <Text style={styles.hiddenItemText} variant={'body'}>
         Close
       </Text>
     </TouchableOpacity>
     <TouchableOpacity
       style={[styles.backRightBtn, styles.dangerBtn]}
       onPress={() => onDeleteItem(id)}>
-      <Text style={styles.hiddenItemText} variant={'paragraph'}>
+      <Text style={styles.hiddenItemText} variant={'body'}>
         Delete
       </Text>
     </TouchableOpacity>
@@ -57,10 +57,10 @@ const RenderHiddenItem: React.FC<HiddenItemProps> = ({
 const Item: React.FC<ItemProps> = ({id, name, cost}) => (
   <Box key={id} style={styles.renderItemContainer}>
     <Box style={styles.listCard}>
-      <Text variant={'paragraph'} style={styles.listCardTextOne}>
+      <Text variant={'body'} style={styles.listCardTextOne}>
         {name}
       </Text>
-      <Text variant={'paragraph'} textAlign={'center'} fontWeight={'600'}>
+      <Text variant={'body'} textAlign={'center'} fontWeight={'600'}>
         $ {cost}
       </Text>
     </Box>
@@ -123,7 +123,7 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
           rightOpenValue={-openWidth}
         />
       ) : (
-        <Text variant={'paragraph'}>Your Recent Expenses Here!</Text>
+        <Text variant={'body'}>Your Recent Expenses Here!</Text>
       )}
     </Box>
   );
