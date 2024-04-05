@@ -18,7 +18,7 @@ const palette = {
 
 const theme = createTheme({
   colors: {
-    mainBackground: palette.purpleLight,
+    mainBackground: palette.white,
     mainForeground: palette.black,
 
     cardPrimaryBackground: palette.purplePrimary,
@@ -61,6 +61,7 @@ const theme = createTheme({
       color: 'mainForeground',
     },
   },
+  dark: false,
 });
 
 export type Theme = typeof theme;
@@ -77,6 +78,7 @@ export const darkTheme: Theme = {
     text: palette.black,
     delete: palette.red,
   },
+  dark: true,
 };
 
 export default theme;
