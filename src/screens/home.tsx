@@ -38,7 +38,7 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          title="+"
+          title="add"
           onPress={() => navigation.navigate('CreateExpenseScreen')}
         />
       ),
