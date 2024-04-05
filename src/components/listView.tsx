@@ -56,8 +56,19 @@ const RenderHiddenItem: React.FC<HiddenItemProps> = ({
 //Render component Item In SwipeList
 const Item: React.FC<ItemProps> = ({id, name, cost}) => (
   <Box key={id} style={styles.renderItemContainer}>
-    <Box style={styles.listCard}>
-      <Text variant={'body'} style={styles.listCardTextOne}>
+    <Box
+      backgroundColor={'cardSecondaryBackground'}
+      borderWidth={1}
+      borderRadius={8}
+      padding={'m'}
+      width={'100%'}
+      flexDirection={'row'}
+      justifyContent={'space-between'}>
+      <Text
+        variant={'body'}
+        color={'mainForeground'}
+        fontWeight={'700'}
+        textTransform={'capitalize'}>
         {name}
       </Text>
       <Text variant={'body'} textAlign={'center'} fontWeight={'600'}>
@@ -132,15 +143,6 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
 const styles = StyleSheet.create({
   renderItemContainer: {
     marginVertical: 5,
-  },
-  listCard: {
-    backgroundColor: '#F8F7F1',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 15,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   listCardTextOne: {
     color: '#000000',
