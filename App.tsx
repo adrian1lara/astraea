@@ -34,12 +34,12 @@ function App(): React.JSX.Element {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : theme}>
-      <StatusBar barStyle={darkTheme ? 'dark-content' : 'light-content'} />
-      <NavigationContainer>
-        <AppContext.Provider value={appContext}>
+      <AppContext.Provider value={appContext}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <NavigationContainer>
           <Navigation />
-        </AppContext.Provider>
-      </NavigationContainer>
+        </NavigationContainer>
+      </AppContext.Provider>
     </ThemeProvider>
   );
 }
