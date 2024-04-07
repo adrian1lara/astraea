@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {RootStackParamList} from '../navigation/types';
 import ListView from '../components/listView';
 import Box from '../components/box';
@@ -8,8 +8,8 @@ import TopExpenses from '../components/topExpenses';
 import connectToDatabase from '../db/db';
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {deleteItem, getItems} from '../db/items';
-import {Button, Switch} from 'react-native';
-import {AppContext} from '../context/appContext';
+import {Button} from 'react-native';
+import {DrawerActions} from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 type ItemProp = {
@@ -23,7 +23,6 @@ type ItemProp = {
 function HomeScreen({navigation, route}: Props): React.JSX.Element {
   const [database, setDatabase] = useState<SQLiteDatabase>();
   const [items, setItems] = useState<ItemProp[]>([]);
-  const {isDarkMode, setIsDarkMode} = useContext(AppContext);
 
   const loadItems = async (db: SQLiteDatabase) => {
     try {
@@ -40,6 +39,13 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
         <Button
           title="add"
           onPress={() => navigation.navigate('CreateExpenseScreen')}
+        />
+      ),
+
+      headerLeft: () => (
+        <Button
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer)}
+          title="x"
         />
       ),
     });
@@ -84,12 +90,6 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
       borderColor={'cardPrimaryBackground'}
       backgroundColor={'mainBackground'}
       p={'m'}>
-      <Box>
-        <Switch
-          value={isDarkMode}
-          onValueChange={(value: boolean) => setIsDarkMode(value)}
-        />
-      </Box>
       <Box
         flexDirection={'row'}
         width={'100%'}
