@@ -2,10 +2,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ThemeProvider} from '@shopify/restyle';
 import theme, {darkTheme} from './src/themes/default';
-import Navigation from './src/navigation';
 import connectToDatabase, {createTables, getTablesNames} from './src/db/db';
 import {StatusBar} from 'react-native';
 import {AppContext} from './src/context/appContext';
+import Root from './src/navigation/drawer';
 
 function App(): React.JSX.Element {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -37,7 +37,7 @@ function App(): React.JSX.Element {
       <AppContext.Provider value={appContext}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <NavigationContainer>
-          <Navigation />
+          <Root />
         </NavigationContainer>
       </AppContext.Provider>
     </ThemeProvider>
