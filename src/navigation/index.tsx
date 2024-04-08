@@ -13,6 +13,11 @@ function Navigation(): React.JSX.Element {
   return (
     <Stack.Navigator
       screenOptions={{
+        contentStyle: {
+          backgroundColor: isDarkMode
+            ? darkTheme.colors.mainBackground
+            : theme.colors.mainBackground,
+        },
         headerStyle: {
           backgroundColor: isDarkMode
             ? darkTheme.colors.mainBackground
