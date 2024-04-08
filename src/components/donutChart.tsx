@@ -37,9 +37,10 @@ function DonutChart({items}: Items): React.JSX.Element {
           <Text
             variant={'body'}
             textAlign={'center'}
+            mt={'s'}
             fontSize={20}
             fontWeight={'700'}>
-            {`${totalCost ? totalCost : 0} $`}
+            {`$${totalCost ? totalCost : 0}`}
           </Text>
         </>
       ) : (
