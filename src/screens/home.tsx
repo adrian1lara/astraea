@@ -20,7 +20,7 @@ type ItemProp = {
   cost: number;
 };
 
-function HomeScreen({navigation, route}: Props): React.JSX.Element {
+function HomeScreen({navigation}: Props): React.JSX.Element {
   const [database, setDatabase] = useState<SQLiteDatabase>();
   const [items, setItems] = useState<ItemProp[]>([]);
 
@@ -66,7 +66,7 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
     });
 
     return unsubscribe;
-  }, [navigation, route.params?.itemAdded]);
+  }, [navigation]);
 
   const handleDeleteItem = async (id: number) => {
     const newItems = [...items];
