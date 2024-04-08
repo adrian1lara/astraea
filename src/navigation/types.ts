@@ -1,4 +1,4 @@
 export type RootStackParamList = {
-  HomeScreen: undefined | {itemAdded: boolean};
+  HomeScreen: undefined;
   CreateExpenseScreen: undefined;
 };
