@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import Text from './text';
 import {storage} from '../utils/mmkvStorage';
 import {
   DrawerContentComponentProps,
@@ -7,12 +6,14 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import {drawerThemeItem} from './customItemTheme';
 
 type CustomDrawerProps = {
   props: DrawerContentComponentProps;
   isDarkMode: boolean;
   setIsDarkMode: (value: boolean) => void;
 };
+
 export const CustomDrawerContent = ({
   props,
   isDarkMode,
@@ -36,9 +37,7 @@ export const CustomDrawerContent = ({
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
-        label={() => (
-          <Text variant={'body'}>{isDarkMode ? 'dark' : 'light'}</Text>
-        )}
+        label={() => drawerThemeItem({isDarkMode})}
         onPress={toggleDarkMode}
         {...props}
       />
