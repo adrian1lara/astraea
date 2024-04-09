@@ -10,6 +10,7 @@ import {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {deleteItem, getItems} from '../db/items';
 import {Button} from 'react-native';
 import {DrawerActions} from '@react-navigation/native';
+import {AddButton} from '../components/addButton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 type ItemProp = {
@@ -35,13 +36,7 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Button
-          title="add"
-          onPress={() => navigation.navigate('CreateExpenseScreen')}
-        />
-      ),
-
+      headerRight: () => AddButton({navigation}),
       headerLeft: () => (
         <Button
           onPress={() => navigation.dispatch(DrawerActions.openDrawer)}
