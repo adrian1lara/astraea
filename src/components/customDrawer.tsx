@@ -1,13 +1,23 @@
-import React, {useContext, useEffect} from 'react';
-import {AppContext} from '../context/appContext';
-import Switcher from './switcher';
-import Box from './box';
+import React, {useEffect} from 'react';
 import Text from './text';
 import {storage} from '../utils/mmkvStorage';
+import {
+  DrawerContentComponentProps,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from '@react-navigation/drawer';
 
-const CustomDrawerContent = () => {
-  const {isDarkMode, setIsDarkMode} = useContext(AppContext);
-
+type CustomDrawerProps = {
+  props: DrawerContentComponentProps;
+  isDarkMode: boolean;
+  setIsDarkMode: (value: boolean) => void;
+};
+export const CustomDrawerContent = ({
+  props,
+  isDarkMode,
+  setIsDarkMode,
+}: CustomDrawerProps) => {
   useEffect(() => {
     const getInitial = async () => {
       const storeMode = storage.getBoolean('isDarkMode');
@@ -17,12 +27,21 @@ const CustomDrawerContent = () => {
     getInitial();
   }, [setIsDarkMode]);
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    storage.set('isDarkMode', !isDarkMode);
+  };
+
   return (
-    <Box m={'s'}>
-      <Text variant={'body'}>{isDarkMode ? 'Dark' : 'White'}</Text>
-      <Switcher isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
-    </Box>
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label={() => (
+          <Text variant={'body'}>{isDarkMode ? 'dark' : 'light'}</Text>
+        )}
+        onPress={toggleDarkMode}
+        {...props}
+      />
+    </DrawerContentScrollView>
   );
 };
-
-export default CustomDrawerContent;
