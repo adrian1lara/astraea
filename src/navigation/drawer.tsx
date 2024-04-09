@@ -1,18 +1,14 @@
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  createDrawerNavigator,
-} from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import React, {useContext} from 'react';
 import Navigation from './index';
-import CustomDrawerContent from '../components/customDrawer';
 import {AppContext} from '../context/appContext';
 import theme, {darkTheme} from '../themes/default';
+import {CustomDrawerContent} from '../components/customDrawer';
 
 const Drawer = createDrawerNavigator();
 
 function Root(): React.JSX.Element {
-  const {isDarkMode} = useContext(AppContext);
+  const {isDarkMode, setIsDarkMode} = useContext(AppContext);
 
   return (
     <Drawer.Navigator
@@ -23,18 +19,18 @@ function Root(): React.JSX.Element {
             ? darkTheme.colors.mainBackground
             : theme.colors.mainBackground,
         },
+        drawerLabelStyle: {
+          color: isDarkMode
+            ? darkTheme.colors.mainForeground
+            : theme.colors.mainForeground,
+        },
         drawerActiveTintColor: isDarkMode
           ? theme.colors.mainBackground
           : darkTheme.colors.mainBackground,
       }}
-      drawerContent={props => {
-        return (
-          <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
-            <CustomDrawerContent />
-          </DrawerContentScrollView>
-        );
-      }}>
+      drawerContent={props =>
+        CustomDrawerContent({props, isDarkMode, setIsDarkMode})
+      }>
       <Drawer.Screen name="HomeStack" component={Navigation} />
     </Drawer.Navigator>
   );
