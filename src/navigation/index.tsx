@@ -5,11 +5,12 @@ import React, {useContext} from 'react';
 import FormScreen from '../screens/form';
 import {AppContext} from '../context/appContext';
 import theme, {darkTheme} from '../themes/default';
-import Text from '../components/text';
-
+import {Title} from '../components/headerTitle';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 function Navigation(): React.JSX.Element {
   const {isDarkMode} = useContext(AppContext);
+
+  const textTitle = 'Astraea';
   return (
     <Stack.Navigator
       screenOptions={{
@@ -28,7 +29,7 @@ function Navigation(): React.JSX.Element {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          headerTitle: () => <Text variant={'body'}>Astraea</Text>,
+          headerTitle: () => Title({textTitle}),
           headerShadowVisible: false,
         }}
       />
