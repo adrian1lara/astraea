@@ -14,8 +14,8 @@ export const AddButton: React.FC<ButtonProps> = ({navigation}) => (
   <Box>
     <TouchableOpacity
       onPress={() => navigation.navigate('CreateExpenseScreen')}>
-      <Text variant={'body'}>
-        <Icon name="add-circle-outline" size={25} />
+      <Text variant={'body'} color={'cardSecondaryBackground'}>
+        <Icon name="add" size={25} />
       </Text>
     </TouchableOpacity>
   </Box>
