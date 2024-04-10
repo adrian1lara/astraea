@@ -8,9 +8,9 @@ import TopExpenses from '../components/topExpenses';
 import connectToDatabase from '../db/db';
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
 import {deleteItem, getItems} from '../db/items';
-import {Button} from 'react-native';
-import {DrawerActions} from '@react-navigation/native';
+
 import {AddButton} from '../components/addButton';
+import {BarsButton} from '../components/barsButton';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 type ItemProp = {
@@ -37,12 +37,7 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => AddButton({navigation}),
-      headerLeft: () => (
-        <Button
-          onPress={() => navigation.dispatch(DrawerActions.openDrawer)}
-          title="x"
-        />
-      ),
+      headerLeft: () => BarsButton({navigation}),
     });
 
     const loadData = async () => {
