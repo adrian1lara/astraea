@@ -35,12 +35,12 @@ export const CustomDrawerContent = ({
 
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
       <DrawerItem
         label={() => drawerThemeItem({isDarkMode})}
         onPress={toggleDarkMode}
         {...props}
       />
+      <DrawerItemList {...props} />
     </DrawerContentScrollView>
   );
 };
