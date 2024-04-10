@@ -3,6 +3,7 @@ import {Animated, StyleSheet, TouchableOpacity} from 'react-native';
 import Box from './box';
 import Text from './text';
 import {SwipeListView} from 'react-native-swipe-list-view';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 type ItemProps = {
   id: number;
@@ -47,7 +48,7 @@ const RenderHiddenItem: React.FC<HiddenItemProps> = ({
       style={[styles.backRightBtn, styles.dangerBtn]}
       onPress={() => onDeleteItem(id)}>
       <Text style={styles.hiddenItemText} variant={'body'}>
-        Delete
+        <Icon name="trash-outline" size={20} />
       </Text>
     </TouchableOpacity>
   </Box>
@@ -99,18 +100,14 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
 
   return (
     <Box width={'100%'}>
-      <Box
-        flexDirection={'row'}
-        borderWidth={1}
-        marginBottom={'s'}
-        borderRadius={5}>
+      <Box flexDirection={'row'} marginBottom={'s'} borderRadius={5}>
         <Box width={'70%'}>
           <Text variant={'subheader'} m={'s'}>
             Item
           </Text>
         </Box>
-        <Box width={'30%'} borderLeftWidth={1}>
-          <Text variant={'subheader'} m={'s'} textAlign={'center'}>
+        <Box width={'30%'}>
+          <Text variant={'subheader'} m={'s'} textAlign={'right'}>
             Cost
           </Text>
         </Box>
@@ -159,7 +156,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
     backgroundColor: '#191919',
     borderRadius: 4,
-    padding: 10,
+    paddingHorizontal: 1,
+    paddingVertical: 8,
   },
   backRightBtn: {
     alignItems: 'center',
