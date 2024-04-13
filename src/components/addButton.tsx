@@ -8,12 +8,13 @@ import Box from './box';
 
 type ButtonProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'HomeScreen'>;
+  category: string;
 };
 
-export const AddButton: React.FC<ButtonProps> = ({navigation}) => (
+export const AddButton: React.FC<ButtonProps> = ({navigation, category}) => (
   <Box>
     <TouchableOpacity
-      onPress={() => navigation.navigate('CreateExpenseScreen')}>
+      onPress={() => navigation.navigate('CreateExpenseScreen', {category})}>
       <Text variant={'body'} color={'cardSecondaryBackground'}>
         <Icon name="add" size={25} />
       </Text>
