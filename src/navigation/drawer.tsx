@@ -19,17 +19,6 @@ function Root(): React.JSX.Element {
             ? darkTheme.colors.mainBackground
             : theme.colors.mainBackground,
         },
-        drawerLabelStyle: {
-          color: isDarkMode
-            ? darkTheme.colors.mainForeground
-            : theme.colors.mainForeground,
-        },
-        drawerActiveTintColor: isDarkMode
-          ? darkTheme.colors.mainBackground
-          : theme.colors.mainBackground,
-        drawerActiveBackgroundColor: isDarkMode
-          ? darkTheme.colors.cardSecondaryBackground
-          : theme.colors.cardSecondaryBackground,
       }}
       drawerContent={props =>
         CustomDrawerContent({props, isDarkMode, setIsDarkMode})
