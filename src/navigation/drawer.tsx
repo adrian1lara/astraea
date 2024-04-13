@@ -25,13 +25,20 @@ function Root(): React.JSX.Element {
             : theme.colors.mainForeground,
         },
         drawerActiveTintColor: isDarkMode
-          ? theme.colors.mainBackground
-          : darkTheme.colors.mainBackground,
+          ? darkTheme.colors.mainBackground
+          : theme.colors.mainBackground,
+        drawerActiveBackgroundColor: isDarkMode
+          ? darkTheme.colors.cardSecondaryBackground
+          : theme.colors.cardSecondaryBackground,
       }}
       drawerContent={props =>
         CustomDrawerContent({props, isDarkMode, setIsDarkMode})
       }>
-      <Drawer.Screen name="HomeStack" component={Navigation} />
+      <Drawer.Screen
+        name="All"
+        component={Navigation}
+        initialParams={{category: 'All'}}
+      />
     </Drawer.Navigator>
   );
 }
