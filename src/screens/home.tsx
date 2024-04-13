@@ -11,6 +11,7 @@ import {deleteItem, getItems} from '../db/items';
 
 import {AddButton} from '../components/addButton';
 import {BarsButton} from '../components/barsButton';
+import {Title} from '../components/headerTitle';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
 type ItemProp = {
@@ -21,9 +22,12 @@ type ItemProp = {
   cost: number;
 };
 
-function HomeScreen({navigation}: Props): React.JSX.Element {
+function HomeScreen({navigation, route}: Props): React.JSX.Element {
   const [database, setDatabase] = useState<SQLiteDatabase>();
   const [items, setItems] = useState<ItemProp[]>([]);
+
+  const category = route.params?.category;
+  console.log(category);
 
   const loadItems = async (db: SQLiteDatabase) => {
     try {
@@ -36,7 +40,8 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => AddButton({navigation}),
+      headerTitle: () => Title({textTitle: category}),
+      headerRight: () => AddButton({navigation, category}),
       headerLeft: () => BarsButton({navigation}),
     });
 
@@ -56,7 +61,7 @@ function HomeScreen({navigation}: Props): React.JSX.Element {
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, category]);
 
   const handleDeleteItem = async (id: number) => {
     const newItems = [...items];
