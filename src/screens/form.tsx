@@ -11,12 +11,14 @@ import {AppContext} from '../context/appContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateExpenseScreen'>;
 
-function FormScreen({navigation}: Props): React.JSX.Element {
+function FormScreen({navigation, route}: Props): React.JSX.Element {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('');
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const {isDarkMode} = useContext(AppContext);
+
+  const {category} = route.params;
 
   const handleAdd = async () => {
     if (name.trim() === '') {
@@ -38,7 +40,7 @@ function FormScreen({navigation}: Props): React.JSX.Element {
       setName('');
       setCost('');
       setDate(new Date());
-      navigation.navigate('HomeScreen');
+      navigation.navigate('HomeScreen', {category});
     } catch (error) {
       console.error('Failed to add Item: ', error);
     }
