@@ -22,7 +22,7 @@ const theme = createTheme({
     mainForeground: palette.black,
 
     cardPrimaryBackground: palette.purplePrimary,
-    cardSecondaryBackground: palette.greenLight,
+    cardSecondaryBackground: palette.greenPrimary,
 
     text: palette.white,
     secondaryText: palette.black,
