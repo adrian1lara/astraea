@@ -1,4 +1,4 @@
 export type RootStackParamList = {
-  HomeScreen: undefined;
-  CreateExpenseScreen: undefined;
+  HomeScreen: {category: string};
+  CreateExpenseScreen: {category: string};
 };
