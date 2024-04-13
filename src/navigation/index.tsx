@@ -32,6 +32,7 @@ function Navigation(): React.JSX.Element {
           headerTitle: () => Title({textTitle}),
           headerShadowVisible: false,
         }}
+        initialParams={{category: 'All'}}
       />
       <Stack.Screen
         name="CreateExpenseScreen"
