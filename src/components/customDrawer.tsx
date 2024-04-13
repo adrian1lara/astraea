@@ -37,7 +37,36 @@ export const CustomDrawerContent = ({
     };
 
     getInitial();
+
+    const loadCategories = () => {
+      try {
+        const storedCategories = storage.getString('categories');
+        if (storedCategories) {
+          setCategories(JSON.parse(storedCategories));
+          console.log(storedCategories);
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    };
+
+    loadCategories();
   }, [setIsDarkMode]);
+
+  useEffect(() => {
+    const saveCategories = () => {
+      try {
+        storage.set('categories', JSON.stringify(categories));
+      } catch (error) {
+        console.error('Error saving categories:', error);
+      }
+    };
+
+    // Save categories only when they actually change
+    if (categories.length > 0) {
+      saveCategories();
+    }
+  }, [categories]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -75,12 +104,14 @@ export const CustomDrawerContent = ({
         focused={selectedCategory === 'All'}
         label={() => Title({textTitle: 'All'})}
         onPress={() => handleCategoryPress('All')}
+        inactiveBackgroundColor="rgba(14, 205, 157, 0.07)"
+        activeBackgroundColor="rgba(14, 205, 157, 0.20)"
       />
       {categories.map(category => (
         <CategoryItem
           key={uuid.v4().toString()}
           label={category.label}
-          onPress={category.onPress}
+          onPress={() => handleCategoryPress(category.label)}
           focused={selectedCategory === category.label}
         />
       ))}
