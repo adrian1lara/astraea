@@ -17,5 +17,7 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
     label={() => Title({textTitle: label})}
     onPress={onPress}
     focused={focused}
+    inactiveBackgroundColor="rgba(14, 205, 157, 0.07)"
+    activeBackgroundColor="rgba(14, 205, 157, 0.20)"
   />
 );
