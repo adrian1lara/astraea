@@ -14,6 +14,9 @@ const palette = {
   black: '#0B0B0B',
   white: '#F0F2F3',
   red: '#FF0000',
+
+  lightOpactityGreen: 'rgba(14, 205, 157, 0.07)',
+  darkOpacityGreen: 'rgba(14, 205, 157, 0.30)',
 };
 
 const theme = createTheme({
@@ -27,9 +30,14 @@ const theme = createTheme({
     text: palette.white,
     secondaryText: palette.black,
     delete: palette.red,
+
+    inactiveDrawerItem: palette.lightOpactityGreen,
+    activeDrawerItem: palette.darkOpacityGreen,
   },
   spacing: {
+    xs: 4,
     s: 8,
+    sm: 12,
     m: 16,
     l: 24,
     xl: 40,
