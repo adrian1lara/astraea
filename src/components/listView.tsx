@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Animated, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import Box from './box';
 import Text from './text';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -22,7 +22,6 @@ type Item = {
 type HiddenItemProps = {
   id: number;
   onDeleteItem: (id: number) => void;
-  onCloseItem: () => void;
 };
 
 type ListViewProps = {
@@ -31,19 +30,8 @@ type ListViewProps = {
 };
 
 // Render HiddenItem component in swipeList
-const RenderHiddenItem: React.FC<HiddenItemProps> = ({
-  id,
-  onCloseItem,
-  onDeleteItem,
-}) => (
-  <Box style={styles.hiddenItemContainer}>
-    <TouchableOpacity
-      style={styles.hiddenItemButton}
-      onPress={() => onCloseItem()}>
-      <Text style={styles.hiddenItemText} variant={'body'}>
-        Close
-      </Text>
-    </TouchableOpacity>
+const RenderHiddenItem: React.FC<HiddenItemProps> = ({id, onDeleteItem}) => (
+  <Box style={styles.hiddenItemContainer} p={'m'}>
     <TouchableOpacity
       style={[styles.backRightBtn, styles.dangerBtn]}
       onPress={() => onDeleteItem(id)}>
@@ -84,13 +72,6 @@ export const openWidth = backButtonWidth;
 function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
 
-  const av = new Animated.Value(0);
-
-  // Fix warn sending onAnimatedValueUpdate
-  av.addListener(() => {
-    return;
-  });
-
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
@@ -120,11 +101,7 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
             <Item id={item.id} name={item.name} cost={item.cost} />
           )}
           renderHiddenItem={({item}) => (
-            <RenderHiddenItem
-              id={item.id}
-              onDeleteItem={onDeleteItem}
-              onCloseItem={onRefresh}
-            />
+            <RenderHiddenItem id={item.id} onDeleteItem={onDeleteItem} />
           )}
           refreshing={refreshing}
           onRefresh={onRefresh}
@@ -148,7 +125,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   hiddenItemContainer: {
-    marginVertical: 16,
+    marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
@@ -164,6 +141,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 0,
     borderRadius: 4,
+    padding: 25,
     justifyContent: 'center',
     position: 'absolute',
     top: 0,
@@ -171,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   dangerBtn: {
-    backgroundColor: '#ff0000',
+    backgroundColor: 'red',
     right: 0,
   },
 
