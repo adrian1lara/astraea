@@ -115,6 +115,7 @@ function ListView({items, onDeleteItem}: ListViewProps): React.JSX.Element {
       {items.length > 0 ? (
         <SwipeListView
           data={items}
+          disableRightSwipe
           renderItem={({item}) => (
             <Item id={item.id} name={item.name} cost={item.cost} />
           )}
