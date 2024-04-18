@@ -25,23 +25,31 @@ function Navigation(): React.JSX.Element {
             : theme.colors.mainBackground,
         },
       }}>
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          headerTitle: () => Title({textTitle}),
-          headerShadowVisible: false,
-        }}
-        initialParams={{category: 'All'}}
-      />
-      <Stack.Screen
-        name="CreateExpenseScreen"
-        component={FormScreen}
-        options={{
-          headerBackTitle: 'back',
-          headerTitle: '',
-        }}
-      />
+      <Stack.Group>
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            headerTitle: () => Title({textTitle}),
+            headerShadowVisible: false,
+          }}
+          initialParams={{category: 'All'}}
+        />
+      </Stack.Group>
+      <Stack.Group
+        screenOptions={{
+          presentation: 'modal',
+        }}>
+        <Stack.Screen
+          name="CreateExpenseScreen"
+          component={FormScreen}
+          options={{
+            headerBackTitle: 'back',
+            headerTitle: '',
+            headerShadowVisible: false,
+          }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
