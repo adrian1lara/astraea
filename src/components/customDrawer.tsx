@@ -6,16 +6,18 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import {drawerThemeItem} from './customItemTheme';
-import {CategoryItem, CategoryItemProps} from './categoryItem';
 import {AddCategory} from './addCategory';
-import uuid from 'react-native-uuid';
 import {InputCategory} from './inputCategory';
 import {Title} from './headerTitle';
-
+import CategorySwipeList from './categorySwipelist';
 type CustomDrawerProps = {
   props: DrawerContentComponentProps;
   isDarkMode: boolean;
   setIsDarkMode: (value: boolean) => void;
+};
+
+export type CategoryArrayProp = {
+  label: string;
 };
 
 export const CustomDrawerContent = ({
@@ -23,7 +25,7 @@ export const CustomDrawerContent = ({
   isDarkMode,
   setIsDarkMode,
 }: CustomDrawerProps) => {
-  const [categories, setCategories] = useState<CategoryItemProps[]>([]);
+  const [categories, setCategories] = useState<CategoryArrayProp[]>([]);
   const [category, setCategory] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
@@ -73,13 +75,15 @@ export const CustomDrawerContent = ({
     storage.set('isDarkMode', !isDarkMode);
   };
 
-  const handleAddCategory = (label: string, onPress: () => void) => {
+  const handleAddCategory = (label: string) => {
     if (label === '' || label === 'all') {
       return;
     }
     setCategories(prevCategories => [
       ...prevCategories,
-      {label, onPress, focused: selectedCategory === label},
+      {
+        label,
+      },
     ]);
     setIsOpen(!isOpen);
   };
@@ -93,8 +97,20 @@ export const CustomDrawerContent = ({
     props.navigation.navigate('HomeScreen', {category: label});
   };
 
+  const removeCategory = (label: string) => {
+    const newCategories = [...categories];
+    const index = newCategories.findIndex(c => c.label === label);
+    if (index !== -1) {
+      newCategories.splice(index, 1);
+      setCategories(newCategories);
+    } else {
+      // Handle the case where the label is not found (optional)
+      console.warn(`Category with label "${label}" not found.`);
+    }
+  };
+
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props} nestedScrollEnabled={true}>
       <DrawerItem
         label={() => drawerThemeItem({isDarkMode})}
         onPress={toggleDarkMode}
@@ -105,16 +121,23 @@ export const CustomDrawerContent = ({
         label={() => Title({textTitle: 'All'})}
         onPress={() => handleCategoryPress('All')}
         inactiveBackgroundColor="rgba(14, 205, 157, 0.07)"
-        activeBackgroundColor="rgba(14, 205, 157, 0.20)"
+        activeBackgroundColor="rgba(14, 205, 157, 0.30)"
       />
-      {categories.map(category => (
+      {/* categories.map(category => (
         <CategoryItem
           key={uuid.v4().toString()}
           label={category.label}
           onPress={() => handleCategoryPress(category.label)}
           focused={selectedCategory === category.label}
         />
-      ))}
+      )) */}
+      <CategorySwipeList
+        categories={categories}
+        handleRemoveCategory={removeCategory}
+        handleOnPressItem={handleCategoryPress}
+        selectedItem={selectedCategory}
+      />
+
       <InputCategory
         isOpen={isOpen}
         category={category}
@@ -122,9 +145,7 @@ export const CustomDrawerContent = ({
         setCategory={setCategory}
         setIsOpen={setIsOpen}
         handleAddCategory={handleAddCategory}
-        HandleCategoryPress={handleCategoryPress}
       />
-
       {!isOpen && <AddCategory onPress={handleDisplayInput} />}
     </DrawerContentScrollView>
   );
