@@ -10,8 +10,7 @@ type InputCategoryProps = {
   category: string;
   setCategory: (value: string) => void;
   setIsOpen: (value: boolean) => void;
-  handleAddCategory: (value: string, onPress: () => void) => void;
-  HandleCategoryPress: (value: string) => void;
+  handleAddCategory: (value: string) => void;
 };
 
 export const InputCategory: React.FC<InputCategoryProps> = ({
@@ -21,7 +20,6 @@ export const InputCategory: React.FC<InputCategoryProps> = ({
   setCategory,
   setIsOpen,
   handleAddCategory,
-  HandleCategoryPress,
 }) => (
   <Box m={'s'}>
     <TextInput
@@ -53,7 +51,7 @@ export const InputCategory: React.FC<InputCategoryProps> = ({
           color={'white'}
           size={20}
           onPress={() => {
-            handleAddCategory(category, () => HandleCategoryPress(category));
+            handleAddCategory(category);
             setCategory('');
           }}
         />
