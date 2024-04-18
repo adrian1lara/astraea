@@ -73,6 +73,30 @@ export const getItems = async (db: SQLiteDatabase): Promise<Item[]> => {
   }
 };
 
+export const getItemsByCategory = async (
+  db: SQLiteDatabase,
+  category: string,
+): Promise<Item[]> => {
+  const query =
+    'SELECT * FROM Items WHERE category = ? ORDER BY date_added DESC';
+  const values = [category];
+
+  try {
+    const items: Item[] = [];
+    const results = await db.executeSql(query, values);
+
+    results?.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        items.push(result.rows.item(index));
+      }
+    });
+    return items;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to get items by category from database');
+  }
+};
+
 //function to delete an item
 export const deleteItem = async (db: SQLiteDatabase, id: number) => {
   const deleteQuery = `DELETE FROM Items where id = ${id}`;
