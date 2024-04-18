@@ -1,9 +1,9 @@
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import React, {useContext} from 'react';
 import Navigation from './index';
 import {AppContext} from '../context/appContext';
 import theme, {darkTheme} from '../themes/default';
 import {CustomDrawerContent} from '../components/customDrawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 const Drawer = createDrawerNavigator();
 
