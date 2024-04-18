@@ -32,7 +32,7 @@ function FormScreen({navigation, route}: Props): React.JSX.Element {
       const newItem = {
         name: name,
         date_added: date,
-        category: 'all',
+        category: category,
         cost: floatCost,
       };
 
