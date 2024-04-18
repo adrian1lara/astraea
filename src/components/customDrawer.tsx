@@ -9,7 +9,7 @@ import {drawerThemeItem} from './customItemTheme';
 import {AddCategory} from './addCategory';
 import {InputCategory} from './inputCategory';
 import {Title} from './headerTitle';
-import CategorySwipeList from './categorySwipelist';
+import CategorySwipeList from './categoryList';
 type CustomDrawerProps = {
   props: DrawerContentComponentProps;
   isDarkMode: boolean;
@@ -28,9 +28,7 @@ export const CustomDrawerContent = ({
   const [categories, setCategories] = useState<CategoryArrayProp[]>([]);
   const [category, setCategory] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(
-    'All',
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   useEffect(() => {
     const getInitial = () => {
@@ -103,6 +101,7 @@ export const CustomDrawerContent = ({
     if (index !== -1) {
       newCategories.splice(index, 1);
       setCategories(newCategories);
+      console.log('removed');
     } else {
       // Handle the case where the label is not found (optional)
       console.warn(`Category with label "${label}" not found.`);
@@ -123,14 +122,6 @@ export const CustomDrawerContent = ({
         inactiveBackgroundColor="rgba(14, 205, 157, 0.07)"
         activeBackgroundColor="rgba(14, 205, 157, 0.30)"
       />
-      {/* categories.map(category => (
-        <CategoryItem
-          key={uuid.v4().toString()}
-          label={category.label}
-          onPress={() => handleCategoryPress(category.label)}
-          focused={selectedCategory === category.label}
-        />
-      )) */}
       <CategorySwipeList
         categories={categories}
         handleRemoveCategory={removeCategory}
