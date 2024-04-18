@@ -7,7 +7,7 @@ import DonutChart from '../components/donutChart';
 import TopExpenses from '../components/topExpenses';
 import connectToDatabase from '../db/db';
 import {SQLiteDatabase} from 'react-native-sqlite-storage';
-import {deleteItem, getItems} from '../db/items';
+import {deleteItem, getItems, getItemsByCategory} from '../db/items';
 
 import {AddButton} from '../components/addButton';
 import {BarsButton} from '../components/barsButton';
@@ -29,15 +29,6 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
   const category = route.params?.category;
   console.log(category);
 
-  const loadItems = async (db: SQLiteDatabase) => {
-    try {
-      const fetchedItems = await getItems(db);
-      setItems(fetchedItems);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => Title({textTitle: category}),
@@ -45,19 +36,27 @@ function HomeScreen({navigation, route}: Props): React.JSX.Element {
       headerLeft: () => BarsButton({navigation}),
     });
 
-    const loadData = async () => {
+    const loadItems = async () => {
       try {
         const db = await connectToDatabase();
         setDatabase(db);
-
-        loadItems(db);
+        if (category === 'All') {
+          const fetchedItems = await getItems(db);
+          setItems(fetchedItems);
+        } else {
+          const fetchedItemsByCategories = await getItemsByCategory(
+            db,
+            category,
+          );
+          setItems(fetchedItemsByCategories);
+        }
       } catch (error) {
         console.error(error);
       }
     };
 
-    const unsubscribe = navigation.addListener('focus', () => {
-      loadData();
+    const unsubscribe = navigation.addListener('state', () => {
+      loadItems();
     });
 
     return unsubscribe;
