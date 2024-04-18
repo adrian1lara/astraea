@@ -9,6 +9,7 @@ export type CategoryItemProps = {
   onPress: () => void;
   focused: boolean;
   modalizeRef: RefObject<Modalize>;
+  setLongPressItem: (value: string) => void;
 };
 
 export const CategoryItem: React.FC<CategoryItemProps> = ({
@@ -16,8 +17,10 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
   onPress,
   focused,
   modalizeRef,
+  setLongPressItem,
 }) => {
-  const onOpenModal = () => {
+  const onOpenModal = (category: string) => {
+    setLongPressItem(category);
     modalizeRef.current?.open();
     console.log(modalizeRef.current);
   };
@@ -29,7 +32,9 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
       m={'s'}
       marginBottom={'xs'}
       borderRadius={5}>
-      <TouchableOpacity onPress={onPress} onLongPress={onOpenModal}>
+      <TouchableOpacity
+        onPress={onPress}
+        onLongPress={() => onOpenModal(label)}>
         <Text variant={'body'}>{label}</Text>
       </TouchableOpacity>
     </Box>
